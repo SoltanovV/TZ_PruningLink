@@ -19,7 +19,7 @@ namespace PruningLink.Services
                 Uri uri = new Uri(longUrl);
 
                 var hashUrl = Convert.ToBase64String(Encoding.UTF8.GetBytes(longUrl.Remove(6)));
-                var shortUrl = uri.Scheme + "//" + uri.DnsSafeHost + "/" + hashUrl;
+                var shortUrl = uri.Scheme + "://" + "localhost:7180/api/Home/redirect/" + uri.DnsSafeHost + "/" + hashUrl;
 
                 model.LongUrl = longUrl;
                 model.ShortUrl = shortUrl;

@@ -1,4 +1,4 @@
-const url = 'https://localhost:7180/api/Home/redirect'
+const url = 'https://localhost:7180/api/Home/GetShortUrl'
 fetch(url).then((res) => {
     return res.json()
 }).then((data) =>{
@@ -9,7 +9,7 @@ fetch(url).then((res) => {
         createCoursUl.classList.add('three')
         createCoursUl.setAttribute('id', 'three')
         divContainer.appendChild(createCoursUl)  
-        createCoursUl.textContent = u.id
+        createCoursUl.textContent = u.shortUrl
     })
 
 })

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using PruningLink.Model;
 using PruningLink.Model.Entity;
 using System.Formats.Asn1;
 using System.Text;
+using System.Web;
 
 namespace PruningLink.Controllers
 {
@@ -20,6 +22,7 @@ namespace PruningLink.Controllers
             _shortUrlServces = shortUrlServces;
         }
 
+        // Метод для создание обрезанных ссылок
         [HttpPost]
         [Route("createShort")]
         public async Task<ActionResult> CreateShort(string longUrl)
@@ -30,10 +33,9 @@ namespace PruningLink.Controllers
 
                 Url model = new Url();
 
-                //Uri uri = new Uri(longUrl);
-
                 Uri uriResult;
 
+                // Проверка на правильность переданной ссылки
                 bool check = Uri.TryCreate(longUrl, UriKind.Absolute, out uriResult) 
                     && (uriResult.Scheme == Uri.UriSchemeHttp 
                     || uriResult.Scheme == Uri.UriSchemeHttps);
@@ -42,17 +44,20 @@ namespace PruningLink.Controllers
                 if (check == true)
                 {
                     var search = await _db.Urls.FirstOrDefaultAsync(u => u.LongUrl == longUrl);
+                    // Проверка на существующий Url в БД
+                    // Если она не существует то создается новая запись
                     if (search == null)
                     {
                         var result = await _shortUrlServces.ShortUrlAsync(longUrl, model);
                         _logger.LogInformation("Запрос Redirect выполнен");
-                        return Ok(result);
+                        return Ok(result.ShortUrl);
                     }
+                    // Если запись емеется в БД то возвраащается она
                     else
                     {
                         //var result = await _shortUrlServces.ReturnUrlInDBAsync(search.Id); 
                         _logger.LogInformation("Запрос Redirect выполнен");
-                        return Ok(search);
+                        return Ok(search.ShortUrl);
                     }
                     
                 }
@@ -65,24 +70,61 @@ namespace PruningLink.Controllers
             }
             
         }
-
+        // Редирект
         [HttpGet]
-        [Route("redirect")]
+        [Route("redirect/{shortUrl}")]
+        public async Task<IActionResult> RedirectUrl(/*RouteContext context,*/ [FromQuery]string shortUrl)
+        {
+            try
+            {
+                string myencod = HttpUtility.UrlEncode(shortUrl);
+                var d = myencod;
+                //string url = context.HttpContext.Request.Path.Value.TrimEnd('/');
+                var searh = await _db.Urls.FirstOrDefaultAsync(x => x.ShortUrl == myencod);
+                if (searh != null)
+                {
+                   return Redirect(searh.LongUrl);
+                }
+                //if (url.StartsWith("/redirect", StringComparison.OrdinalIgnoreCase))
+                //{
+                //    context.Handler = async ctx =>
+                //    {
+                //        ctx.Response.ContentType = "text/html;charset=utf-8";
+                //        Redirect()
+                //    };
+                //}
+                _logger.LogInformation("Запрос redirect получчен");
+                var result = _db.Urls;
+              
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+            
+        }
+
+        // Вывод данных ид БД
+        [HttpGet]
+        [Route("GetShortUrl")]
         public async Task<IActionResult> GetShortUrl()
         {
             try
             {
+                
                 _logger.LogInformation("Запрос redirect получчен");
                 var result = _db.Urls;
-
+               
                 return Ok(result);
             }
             catch (Exception ex)
             {
-
-                throw;
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
             }
-            
+
         }
 
     }
