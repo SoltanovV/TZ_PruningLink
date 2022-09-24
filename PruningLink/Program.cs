@@ -25,7 +25,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddTransient<IShortUrlServces, ChortUrlServices>();
-//builder.Services.AddTransient<IRedirectUrl, RedirectUrl>();
 
 var app = builder.Build();
 
