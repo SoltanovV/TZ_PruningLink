@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+// Подключение к БД
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationContext>(options =>
 {
@@ -12,7 +13,7 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 });
 
 
-
+// Добавление политики CORS
 builder.Services.AddCors(opions =>
 {
     opions.AddPolicy(name: "CorsPolicy", policy =>
@@ -24,7 +25,9 @@ builder.Services.AddCors(opions =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Подключение сервисов
 builder.Services.AddTransient<IShortUrlServces, ChortUrlServices>();
+//builder.Services.AddTransient<IRedirectUrl, RedirectUrl>();
 
 var app = builder.Build();
 
@@ -35,7 +38,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Использование CORS
 app.UseCors("CorsPolicy");
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
