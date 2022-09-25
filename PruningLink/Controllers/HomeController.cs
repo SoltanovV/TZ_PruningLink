@@ -50,14 +50,14 @@ namespace PruningLink.Controllers
                     {
                         var result = await _shortUrlServces.ShortUrlAsync(longUrl, model);
                         _logger.LogInformation("Запрос Redirect выполнен");
-                        return Ok(result.ShortUrl);
+                        return Ok(result.HashUrl);
                     }
                     // Если запись емеется в БД то возвраащается она
                     else
                     {
                         //var result = await _shortUrlServces.ReturnUrlInDBAsync(search.Id); 
                         _logger.LogInformation("Запрос Redirect выполнен");
-                        return Ok(search.ShortUrl);
+                        return Ok(search.HashUrl);
                     }
                     
                 }
@@ -72,27 +72,20 @@ namespace PruningLink.Controllers
         }
         // Редирект
         [HttpGet]
-        [Route("redirect/{shortUrl}")]
-        public async Task<IActionResult> RedirectUrl(/*RouteContext context,*/ [FromQuery]string shortUrl)
+        [Route("Redirect/{hash}")]
+        public async Task<IActionResult> RedirectUrl(/*RouteContext context,*/ string hash)
         {
             try
             {
-                string myencod = HttpUtility.UrlEncode(shortUrl);
-                var d = myencod;
+                //string myencod = HttpUtility.UrlEncode(shortUrl);
+                //var d = myencod;
                 //string url = context.HttpContext.Request.Path.Value.TrimEnd('/');
-                var searh = await _db.Urls.FirstOrDefaultAsync(x => x.ShortUrl == myencod);
+                var searh = await _db.Urls.FirstOrDefaultAsync(x => x.HashUrl == hash);
                 if (searh != null)
                 {
                    return Redirect(searh.LongUrl);
                 }
-                //if (url.StartsWith("/redirect", StringComparison.OrdinalIgnoreCase))
-                //{
-                //    context.Handler = async ctx =>
-                //    {
-                //        ctx.Response.ContentType = "text/html;charset=utf-8";
-                //        Redirect()
-                //    };
-                //}
+               
                 _logger.LogInformation("Запрос redirect получчен");
                 var result = _db.Urls;
               
