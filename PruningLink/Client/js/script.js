@@ -20,7 +20,7 @@ let entUrl = document.querySelector('input.ent-url')
 form.addEventListener("submit", (e) => {
 
     e.preventDefault();
-    var res = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
+    const res = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/
     if(!res.test(entUrl.value)){
         entUrl.style.background = 'red'
         entUrl.focus()

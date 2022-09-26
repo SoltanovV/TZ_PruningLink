@@ -1,10 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using PruningLink.Model;
-using PruningLink.Model.Entity;
-using System.Formats.Asn1;
-using System.Text;
-using System.Web;
 
 namespace PruningLink.Controllers
 {
@@ -72,14 +66,11 @@ namespace PruningLink.Controllers
         }
         // Редирект
         [HttpGet]
-        [Route("Redirect/{hash}")]
+        [Route("/Redirect/{hash}")]
         public async Task<IActionResult> RedirectUrl(/*RouteContext context,*/ string hash)
         {
             try
             {
-                //string myencod = HttpUtility.UrlEncode(shortUrl);
-                //var d = myencod;
-                //string url = context.HttpContext.Request.Path.Value.TrimEnd('/');
                 var searh = await _db.Urls.FirstOrDefaultAsync(x => x.HashUrl == hash);
                 if (searh != null)
                 {
@@ -99,14 +90,13 @@ namespace PruningLink.Controllers
             
         }
 
-        // Вывод данных ид БД
+        // Вывод данных из БД
         [HttpGet]
         [Route("GetShortUrl")]
         public async Task<IActionResult> GetShortUrl()
         {
             try
             {
-                
                 _logger.LogInformation("Запрос redirect получчен");
                 var result = _db.Urls;
                
