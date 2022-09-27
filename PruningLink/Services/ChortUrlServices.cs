@@ -12,6 +12,7 @@ namespace PruningLink.Services
         {
             _db= db;
         }
+
         public async Task<Url> ShortUrlAsync(string longUrl, Url model)
         {
 			try
@@ -37,6 +38,7 @@ namespace PruningLink.Services
 				throw;
 			}
         }
+
         // Метод для рандомного хеша
         public string RandomString(int length)
         {
@@ -44,17 +46,6 @@ namespace PruningLink.Services
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(chars, length).Select(s => s[random.Next(s.Length)]).ToArray());
         }
-        //public async Task<Url> ReturnUrlInDBAsync(int id)
-        //{
-        //    try
-        //    {
-        //        _db
-        //    }
-        //    catch (Exception)
-        //    {
-
-        //        throw;
-        //    }
-        //}
+        
     }
 }
