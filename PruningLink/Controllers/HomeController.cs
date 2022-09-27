@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PruningLink.Controllers
 {
+
     [ApiController]
     [Route("api/[controller]")]
     public class HomeController : Controller
@@ -9,16 +11,20 @@ namespace PruningLink.Controllers
         private ApplicationContext _db;
         private ILogger<HomeController> _logger;
         private IShortUrlServces _shortUrlServces;
-        public HomeController(ApplicationContext db, ILogger<HomeController> logger, IShortUrlServces shortUrlServces)
+        private IUrlServices _urlServices;
+
+        public HomeController(ApplicationContext db, ILogger<HomeController> logger, 
+            IShortUrlServces shortUrlServces, IUrlServices urlServices)
         {
             _db = db;
             _logger = logger;
             _shortUrlServces = shortUrlServces;
+            _urlServices = urlServices;
         }
 
         // Метод для создание обрезанных ссылок
         [HttpPost]
-        [Route("createShort")]
+        [Route("CreateShortUrl")]
         public async Task<ActionResult> CreateShort(string longUrl)
         {
             try
@@ -77,7 +83,7 @@ namespace PruningLink.Controllers
                    return Redirect(searh.LongUrl);
                 }
                
-                _logger.LogInformation("Запрос redirect получчен");
+                _logger.LogInformation("Запрос Redirect получчен");
                 var result = _db.Urls;
               
                 return Ok();
@@ -97,7 +103,7 @@ namespace PruningLink.Controllers
         {
             try
             {
-                _logger.LogInformation("Запрос redirect получчен");
+                _logger.LogInformation("Запрос GetShortUrl получчен");
                 var result = _db.Urls;
                
                 return Ok(result);
@@ -108,6 +114,39 @@ namespace PruningLink.Controllers
                 return BadRequest(ex.Message);
             }
 
+        }
+        [HttpPost]
+        [Route("/RefactorUrl")]
+        public async Task<IActionResult> RefactorUrl(int id,string url)
+        {
+            try
+            {
+                _logger.LogInformation("Запрос RefactorUrl получчен");
+                var result = await _urlServices.RefactorUrl(id, url);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("/DeletedUrl/{id}")]
+        public async Task<IActionResult> DeletedUrl(int id)
+        {
+            try
+            {
+                _logger.LogInformation("Запрос DeletedUrl получчен");
+                var result = await _urlServices.DeletedUrl(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
     }
