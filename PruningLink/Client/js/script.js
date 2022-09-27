@@ -21,8 +21,7 @@ function GetData(url, longUrl){
         // console.log(data)
         data.map((u) => {
 
-            let createTable = document.createElement('tr')
-            createTable.classList.add('dip')
+            let createTable = createElement('tr', 'dip')
             divContainer.appendChild(createTable)
 
             let buttonDeleate = document.createElement('button')
@@ -30,7 +29,7 @@ function GetData(url, longUrl){
 
             buttonDeleate.addEventListener('click',  async ()=> {
                 console.log(buttonDeleate.className)
-                await DeletedUrl(buttonDeleate.className)
+                await deletedUrl(buttonDeleate.className)
             })
 
             let buttonTd = document.createElement('td')
@@ -51,55 +50,41 @@ function GetData(url, longUrl){
     })
 }
 
-function  DeletedUrl(id){
+function  deletedUrl(id){
     fetch (urlPostDeleate + id, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         }
-
     }).then(res => {
         return res
     })
 }
-form.addEventListener("submit", (e) => {
-    e.preventDefault();
 
-        const message = document.getElementsByTagName('input')[0].value
-    fetch(urlPost + message, {
+form.addEventListener("submit", (e) => {
+
+    // Получение данных из input
+    const message = document.getElementsByTagName('input')[0].value
+    sendUrl(message)
+
+
+
+})
+// Метод для отправки данных на сервер
+function sendUrl(body){
+    fetch(urlPost + body, {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(message)
+        body: JSON.stringify(body)
     })
         .then(response => response.json())
-        .catch(error => console.error('Unable to add item.', error))
-})
+}
 
-// function buttonSend (url,body){
-//     const headers ={
-//         'ContentType': 'application/json'
-//     }
-//     return fetch(url, {
-//         method: 'post',
-//         body: JSON.stringify(body),
-//         headers: headers
-//     })
-// }
-
-//function GetId(url){
-//     fetch(url).then((res) => {
-//         return res.json()
-//     }).then((data) =>{
-//         data.map((u) => {
-//             u.id
-//         })
-//     })
-// }
-// createTable()
-// function createTable(){
-//     console.log(GetId(url))
-// }
+function createElement(elementTag, elementClass){
+    let createTable = document.createElement('elementTag')
+    createTable.classList.add('elementClass')
+}
