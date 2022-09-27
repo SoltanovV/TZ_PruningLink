@@ -18,7 +18,7 @@ builder.Services.AddCors(opions =>
 {
     opions.AddPolicy(name: "CorsPolicy", policy =>
     {
-        policy.AllowAnyOrigin();
+        policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
     });
 });
 
@@ -27,7 +27,7 @@ builder.Services.AddSwaggerGen();
 
 // Подключение сервисов
 builder.Services.AddTransient<IShortUrlServces, ChortUrlServices>();
-//builder.Services.AddTransient<IRedirectUrl, RedirectUrl>();
+builder.Services.AddTransient<IUrlServices, UrlServices>();
 
 var app = builder.Build();
 
@@ -37,6 +37,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseDefaultFiles();
+app.UseStaticFiles();
 
 // Использование CORS
 app.UseCors("CorsPolicy");
