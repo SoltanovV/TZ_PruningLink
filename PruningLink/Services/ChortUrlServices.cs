@@ -18,9 +18,9 @@ namespace PruningLink.Services
 			try
 			{
                 Uri uri = new Uri(longUrl);
-                //var d = Encoding.UTF8.GetBytes(longUrl.Remove(6));
+                
                 var hashUrl = RandomString(5);
-                var shortUrl = uri.Scheme + "://" + "localhost:7180/api/Home/redirect/" + uri.DnsSafeHost + "/" + hashUrl;
+                var shortUrl = uri.Scheme + "://" + "localhost:7180/Redirect/" + hashUrl;
 
                 model.LongUrl = longUrl;
                 model.ShortUrl = shortUrl;
