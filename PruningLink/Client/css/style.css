@@ -1,5 +1,68 @@
-.listUrl tr{
-    align-content: center;
-    border: 1px;
-    border-color: black;
+.container {
+    max-width: 1200px;
+    margin: 100px auto;
+    font-size: 16px;
+    line-height: 22px;
+}
+
+button {
+    cursor: pointer;
+}
+
+.listUrl {
+    width: 100%;
+    margin-top: 50px;
+}
+
+td {
+    padding: 5px 10px;
+    border: 1px solid black;
+}
+
+th {
+    padding: 5px 10px 10px;
+}
+
+.buttonDelete {
+   margin-left: 50px;
+}
+
+.buttonDeletedUrl,
+.buttonRefactorUrl {
+    padding: 0 0 0 10px;
+    border: none;
+}
+
+.buttonDeletedUrl button,
+.buttonRefactorUrl button {
+    width: 100%;
+    height: 30px;
+}
+
+input {
+    width: 300px;
+    height: 20px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+.sendData,
+.sendRefactorUrl {
+    height: 34px;
+    margin-left: 20px;
+}
+
+.input-cover {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-link {
+    display: flex;
+    align-items: end;
+}
+
+label {
+    font-weight: 600;
+    margin-bottom: 10px;
 }
