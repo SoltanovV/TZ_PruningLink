@@ -7,22 +7,21 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div>
-        <div id="table">
-
-        </div>
-        <div>
-            <form action="/" method="post" class="form">
+    <div class="container">
+        <div class="input-link">
+            <div class="input-cover">
+                <label>Введите ссылку</label>
                 <input onblur="" type="text" class="ent-url">
-                <button type="submit"></button>
-            </form>
-            <button class="getData">Получить список</button>
+            </div>
+            <button type="submit" class="sendData">Обрезать URL</button>
         </div>
-        <div>
-            <table class="listUrl">
-
-            </table>
-        </div>
+        <table class="listUrl">
+            <tr>
+                <th>№</th>
+                <th>Сокращенная ссылка</th>
+                <th>Длинная ссылка</th>
+            </tr>
+        </table>
     </div>
     <script src="js/script.js"></script>
 </body>
