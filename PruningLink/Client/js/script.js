@@ -61,6 +61,7 @@ function GetData(url){
                 sendRefactorUrl.addEventListener('click', () =>{
                     let data = inputRefactorUrl.value
                     refactorUrl(buttonRefactor.className, data)
+                    alert('Успешно')
                 })
             }
 
