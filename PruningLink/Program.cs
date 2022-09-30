@@ -25,18 +25,28 @@ builder.Services.AddCors(opions =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddMvc();
+
 // Подключение сервисов
 builder.Services.AddTransient<IShortUrlServces, ChortUrlServices>();
 builder.Services.AddTransient<IUrlServices, UrlServices>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+//Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Index}/{action=Index}");
+});
 
 app.UseDefaultFiles();
 app.UseStaticFiles();
@@ -45,8 +55,6 @@ app.UseStaticFiles();
 app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapControllers();
 

@@ -6,6 +6,7 @@ const urlRefactorPost = 'https://localhost:7180/RefactorUrl?'
 let divContainer = document.querySelector('table.listUrl');
 
 let inputRefactorUrl = document.querySelector('.refactorUrl');
+
 let sendRefactorUrl = document.querySelector('.sendRefactorUrl')
 let entUrl = document.querySelector('.sendData')
 let iptUrl = document.querySelector('.ent-url')
@@ -25,7 +26,7 @@ function GetData(url){
             let createLongTd = document.createElement('td')
             let createShortTd = document.createElement('td')
             let createCountTd = document.createElement('td')
-            let link = document.createElement('a')
+            let link = document.createElement('a')  
 
             createCountTd.classList.add('count')
             createCountTd.textContent = u.count
@@ -51,17 +52,24 @@ function GetData(url){
 
             buttonRefactor.classList.add(u.id)
             buttonRefactor.textContent = 'Редактировать'
+
             buttonRefactorTd.classList.add('buttonRefactorUrl')
             buttonRefactorTd.appendChild(buttonRefactor)
 
-            buttonRefactor.addEventListener('click', () =>{
-                window.open('RefactorUrl.html')
+            buttonRefactor.addEventListener('click', () => {
+                window.location.href ='html/RefactorUrl.html'; 
             })
             if (sendRefactorUrl){
-                sendRefactorUrl.addEventListener('click', () =>{
+                sendRefactorUrl.addEventListener('click', () => {
                     let data = inputRefactorUrl.value
-                    refactorUrl(buttonRefactor.className, data)
-                    alert('Успешно')
+                    if (checkURL(data)) {
+                        refactorUrl(buttonRefactor.className, data)
+                        alert('Успешно')
+                    }
+                    else {
+                        alert('Ошибка')
+                    }
+                   
                 })
             }
 
@@ -81,7 +89,6 @@ function GetData(url){
 
 if (entUrl) {
     entUrl.addEventListener("click",   () => {
-        const objRE = /(^https?:\/\/)?/;
         console.log(iptUrl.value)
         if (checkURL(iptUrl.value)){
             const body = document.getElementsByTagName('input')[0].value
@@ -96,6 +103,7 @@ if (entUrl) {
 
     });
 }
+// Проверка Url
 function checkURL(url) {
     const regURL = /^(?:(?:https?|ftp|telnet):\/\/(?:[a-z0-9_-]{1,32}(?::[a-z0-9_-]{1,32})?@)?)?(?:(?:[a-z0-9-]{1,128}\.)+(?:com|net|org|mil|edu|arpa|ru|gov|biz|info|aero|inc|name|[a-z]{2})|(?!0)(?:(?!0[^.]|255)[0-9]{1,3}\.){3}(?!0|255)[0-9]{1,3})(?:\/[a-z0-9.,_@%&?+=\~\/-]*)?(?:#[^ \'\"&<>]*)?$/i;
     return regURL.test(url);
